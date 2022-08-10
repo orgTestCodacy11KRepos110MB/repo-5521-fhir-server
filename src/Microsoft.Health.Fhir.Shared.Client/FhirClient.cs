@@ -108,6 +108,7 @@ namespace Microsoft.Health.Fhir.Client
             where T : Resource
         {
             using var message = new HttpRequestMessage(HttpMethod.Post, uri);
+
             message.Headers.Accept.Add(_mediaType);
             message.Content = CreateStringContent(resource);
 
@@ -551,6 +552,51 @@ namespace Microsoft.Health.Fhir.Client
             return await CreateResponseAsync<OperationOutcome>(response);
         }
 
+        public async Task<Parameters> ValidateCodeGETAsync(string path, string system, string code, string display, CancellationToken cancellationToken = default)
+        {
+            using var message = new HttpRequestMessage(HttpMethod.Get, $"{path}?system={system}&code={code}&display={display}");
+
+            return (Parameters)_deserialize(await TerminologyOperationHelper(message, cancellationToken));
+        }
+
+        public async Task<Parameters> ValidateCodePOSTAsync(string path, string parameter, CancellationToken cancellationToken = default)
+        {
+            using var message = new HttpRequestMessage(HttpMethod.Post, path);
+            message.Content = new StringContent(parameter, Encoding.UTF8, ContentType.JSON_CONTENT_HEADER);
+
+            return (Parameters)_deserialize(await TerminologyOperationHelper(message, cancellationToken));
+        }
+
+        public async Task<Parameters> LookUpGETAsync(string path, string system, string code, CancellationToken cancellationToken = default)
+        {
+            using var message = new HttpRequestMessage(HttpMethod.Get, $"{path}?system={system}&code={code}");
+
+            return (Parameters)_deserialize(await TerminologyOperationHelper(message, cancellationToken));
+        }
+
+        public async Task<Parameters> LookUpPOSTAsync(string path, string parameter, CancellationToken cancellationToken = default)
+        {
+            using var message = new HttpRequestMessage(HttpMethod.Post, path);
+            message.Content = new StringContent(parameter, Encoding.UTF8, ContentType.JSON_CONTENT_HEADER);
+
+            return (Parameters)_deserialize(await TerminologyOperationHelper(message, cancellationToken));
+        }
+
+        public async Task<ValueSet> ExpandGETAsync(string path, CancellationToken cancellationToken = default)
+        {
+            using var message = new HttpRequestMessage(HttpMethod.Get, path);
+
+            return (ValueSet)_deserialize(await TerminologyOperationHelper(message, cancellationToken));
+        }
+
+        public async Task<ValueSet> ExpandPOSTAsync(string path, string parameter, CancellationToken cancellationToken = default)
+        {
+            using var message = new HttpRequestMessage(HttpMethod.Post, path);
+            message.Content = new StringContent(parameter, Encoding.UTF8, ContentType.JSON_CONTENT_HEADER);
+
+            return (ValueSet)_deserialize(await TerminologyOperationHelper(message, cancellationToken));
+        }
+
         private StringContent CreateStringContent(Resource resource)
         {
             return new StringContent(_serialize(resource, SummaryType.False), Encoding.UTF8, _contentType);
@@ -602,6 +648,15 @@ namespace Microsoft.Health.Fhir.Client
             await EnsureSuccessStatusCodeAsync(response);
 
             return await CreateResponseAsync<Parameters>(response);
+        }
+
+        private async Task<string> TerminologyOperationHelper(HttpRequestMessage message, CancellationToken cancellationToken)
+        {
+            using HttpResponseMessage response = await HttpClient.SendAsync(message, cancellationToken);
+
+            await EnsureSuccessStatusCodeAsync(response);
+
+            return await response.Content.ReadAsStringAsync(cancellationToken);
         }
     }
 }
