@@ -48,4 +48,4 @@ To find out more, information, check out:
 
 - The request information and trace logs in Azure Application Insights. 
 - This could be an issue with the Authorize User Input static app. Check the browser developer tools for more details.
-- Ensure your Azure Deployment of the sample was successful. 
+- Ensure your Azure Deployment of the sample was successful.

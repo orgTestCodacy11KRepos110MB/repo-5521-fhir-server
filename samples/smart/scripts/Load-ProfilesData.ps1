@@ -1,5 +1,11 @@
-$FHIR_URL = "https://workspace-fhirdata.fhir.azurehealthcareapis.com"
+## You can copy and paste this. Make sure to start in the `fhir-server` folder, the repo root.
 
+$FHIR_URL = "https://workspace-fhirservice.fhir.azurehealthcareapis.com"
+$REPO_DIR = $(Get-Location).Path
+
+# Make sure you are logged in to the Azure CLI for your tenant
+
+cd ../
 git clone https://github.com/microsoft/fhir-loader.git
 cd fhir-loader
 
@@ -10,11 +16,11 @@ cd .\src\FhirLoader.Tool\
 dotnet pack
 
 # Uninstall if already installed
-# dotnet tool uninstall FhirLoader.Tool --global
+dotnet tool uninstall FhirLoader.Tool --global
 dotnet tool install --global --add-source .\nupkg\ FhirLoader.Tool
 
 # Load sample data
-microsoft-fhir-loader --blob https://ahdssampledata.blob.core.windows.net/fhir/uscore-testing-data-09-17-2022/ --fhir $FHIR_URL
+microsoft-fhir-loader --folder $REPO_DIR/fhir-server/docs/rest/Inferno --fhir $FHIR_URL
 
 # Download US Core
 cd $HOME/Downloads
