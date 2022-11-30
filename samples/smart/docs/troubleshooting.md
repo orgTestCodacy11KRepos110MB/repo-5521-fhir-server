@@ -16,7 +16,7 @@ This sample makes some assumptions about AAD configuration. You may run into err
 
 - Allowing users to consent to scopes (this is needed for them to choose and store scopes).
 - Allowing developers to register applications.
-- Your account needs elevated permissions to setup the context application and 
+- Your account needs elevated permissions to setup the context application.
 
 ### Azure Configuration Issues
 
@@ -27,7 +27,11 @@ Some common Azure issues that you need to watch out for are:
 
 ### Deployment Issues with the Azure Developer CLI
 
-The Azure Developer CLI creates a deployment in Azure as part of the `azd up` command. To get additional details about deployment issues, it's best to find the newly created resource group in Azure and 
+The Azure Developer CLI creates a deployment in Azure as part of the `azd up` command. To get additional details about deployment issues, it's best to find the newly created resource group in Azure and look at the deployments in the resource group for more information. A single `azd up` command will spawn off multiple child deployments, so make sure to click into the failing deployment for more details.
+
+### Not getting correct scopes
+
+If you are getting more scopes assigned to your token, make sure you HAVE NOT applied admin consent for any scopes. Any admin consent that you apply will override user selected scopes.
 
 ### Unauthorized Errors
 

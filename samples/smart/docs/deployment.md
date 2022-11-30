@@ -224,4 +224,8 @@ Azure Active Directory does not support RSA384 and/or ES384 which is required by
 
 In order to test this sample, you will need to load sample data and profiles. Inferno requires the loading of US Core and some sample data with conforming data. Your FHIR Service will need to have compliant data to pass the compliance test.
 
-To quickly load data for testing, you can use [this script](../scripts/Load-ProfilesData.ps1).
+For more information on loading profiles, check out the [FHIR Loader Tool for US Core](https://github.com/microsoft/fhir-loader/blob/fhir-loader-cli/src/FhirLoader.Tool/uscore_README.md)
+
+We have created some sample data that can be deployed. Check out [this directory](../../../docs/rest/Inferno/).
+
+Or to quickly load data for testing, you can use [this script](../scripts/Load-ProfilesData.ps1) with some modification.
