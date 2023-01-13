@@ -108,6 +108,7 @@ jobs:
         New-AzResourceGroupDeployment -Name $webAppName -ResourceGroupName "${{ parameters.resourceGroup }}" -TemplateFile $(System.DefaultWorkingDirectory)/samples/templates/default-azuredeploy-docker.json -TemplateParameterObject $templateParameters -Verbose
         }catch {
           if("${{ parameters.sql }}" -eq "true"){
+            Write-Host "Creating new resource for webAppName: $webAppName, templateParameters: $templateParameters"
             $templateParameters["sqlServerNewOrExisting"] = "new"
             New-AzResourceGroupDeployment -Name $webAppName -ResourceGroupName "${{ parameters.resourceGroup }}" -TemplateFile $(System.DefaultWorkingDirectory)/samples/templates/default-azuredeploy-docker.json -TemplateParameterObject $templateParameters -Verbose
           }
